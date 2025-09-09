@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celu_Usa - Gestión de Inventario</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@latest/dist/html5-qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .sidebar {
+            transition: all 0.3s;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        #scanner-container {
+            transition: all 0.3s;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="sidebar bg-indigo-800 text-white w-64 flex-shrink-0">
+            <div class="p-4 flex items-center space-x-2 border-b border-indigo-700">
+                <i data-feather="smartphone" class="w-8 h-8"></i>
+                <h1 class="text-xl font-bold">StockCel</h1>
+            </div>
+            <nav class="p-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="flex items-center space-x-2 p-2 rounded hover:bg-indigo-700 bg-indigo-700">
+                            <i data-feather="home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#inventory" class="flex items-center space-x-2 p-2 rounded hover:bg-indigo-700">
+                            <i data-feather="box"></i>
+                            <span>Inventario</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#add-item" class="flex items-center space-x-2 p-2 rounded hover:bg-indigo-700">
+                            <i data-feather="plus-circle"></i>
+                            <span>Agregar Producto</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="repairs.html" class="flex items-center space-x-2 p-2 rounded hover:bg-indigo-700">
+                            <i data-feather="tool"></i>
+                            <span>Reparaciones</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="catalog.html" class="flex items-center space-x-2 p-2 rounded hover:bg-indigo-700">
+                            <i data-feather="image"></i>
+                            <span>Catálogo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#reports" class="flex items-center space-x-2 p-2 rounded hover:bg-indigo-700">
+                            <i data-feather="pie-chart"></i>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#scanner" class="flex items-center space-x-2 p-2 rounded hover:bg-indigo-700">
+                            <i data-feather="maximize"></i>
+                            <span>Escaner IMEI</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#loans" class="flex items-center space-x-2 p-2 rounded hover:bg-indigo-700">
+                            <i data-feather="repeat"></i>
+                            <span>Préstamos</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 overflow-auto">
+            <!-- Header -->
+            <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-800">Dashboard</h2>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Buscar..." class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <i data-feather="search" class="absolute left-3 top-2.5 text-gray-400"></i>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                            <i data-feather="user" class="text-indigo-600"></i>
+                        </div>
+                        <span class="text-sm font-medium">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <main class="p-6">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="dashboard-card bg-white rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-500 text-sm">Total en Stock</p>
+                                <h3 class="text-2xl font-bold">148</h3>
+                            </div>
+                            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                <i data-feather="box"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card bg-white rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-500 text-sm">Valor Total</p>
+                                <h3 class="text-2xl font-bold">$48,750</h3>
+                            </div>
+                            <div class="p-3 rounded-full bg-green-100 text-green-600">
+                                <i data-feather="dollar-sign"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card bg-white rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-500 text-sm">Reparaciones</p>
+                                <h3 class="text-2xl font-bold">12</h3>
+                            </div>
+                            <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                                <i data-feather="tool"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card bg-white rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-500 text-sm">Garantías</p>
+                                <h3 class="text-2xl font-bold">8</h3>
+                            </div>
+                            <div class="p-3 rounded-full bg-red-100 text-red-600">
+                                <i data-feather="shield"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory Section -->
+                <section id="inventory" class="bg-white rounded-lg shadow p-6 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">Inventario de Celulares</h3>
+                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
+                            <i data-feather="filter" class="w-4 h-4"></i>
+                            <span>Filtrar</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modelo</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marca</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IMEI</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">iPhone 13 Pro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Apple</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">123456789012345</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Nuevo</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">$899</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <button class="text-indigo-600 hover:text-indigo-900 mr-3">
+                                            <i data-feather="edit" class="w-4 h-4"></i>
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-900">
+                                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- More rows would go here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Add Product Section -->
+                <section id="add-item" class="bg-white rounded-lg shadow p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Agregar Nuevo Producto</h3>
+                    <form>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Marca</label>
+                                <select class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500">
+                                    <option>Apple</option>
+                                    <option>Samsung</option>
+                                    <option>Xiaomi</option>
+                                    <option>Huawei</option>
+                                    <option>Otra</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Modelo</label>
+                                <input type="text" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">IMEI</label>
+                                <div class="flex">
+                                    <input type="text" class="flex-1 border rounded-l-lg p-2 focus:ring-2 focus:ring-indigo-500">
+                                    <button type="button" class="bg-indigo-600 text-white px-4 rounded-r-lg flex items-center">
+                                        <i data-feather="maximize" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+                                <select class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500">
+                                    <option>Nuevo</option>
+                                    <option>Usado</option>
+                                    <option>Reacondicionado</option>
+                                    <option>Reparado</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Precio Compra</label>
+                                <input type="number" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Precio Venta</label>
+                                <input type="number" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Ingreso</label>
+                                <input type="date" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Garantía (meses)</label>
+                                <input type="number" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg flex items-center space-x-2">
+                                <i data-feather="save" class="w-4 h-4"></i>
+                                <span>Guardar Producto</span>
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Scanner Section -->
+                <section id="scanner" class="bg-white rounded-lg shadow p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Escaner de IMEI</h3>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div id="scanner-container" class="flex-1 border-2 border-dashed border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center">
+                            <div id="reader" class="w-full h-64"></div>
+                            <p class="text-gray-500 mt-2">Escanea el código IMEI del dispositivo</p>
+                            <button id="start-scanner" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
+                                <i data-feather="maximize" class="w-4 h-4"></i>
+                                <span>Iniciar Escáner</span>
+                            </button>
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-medium mb-2">Últimos IMEI Escaneados</h4>
+                                <ul class="space-y-2">
+                                    <li class="flex justify-between items-center p-2 bg-white rounded">
+                                        <span>123456789012345</span>
+                                        <span class="text-sm text-gray-500">iPhone 13 Pro</span>
+                                    </li>
+                                    <li class="flex justify-between items-center p-2 bg-white rounded">
+                                        <span>987654321098765</span>
+                                        <span class="text-sm text-gray-500">Samsung S22</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">IMEI Manual</label>
+                                <input type="text" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500" placeholder="Ingrese IMEI manualmente">
+                            </div>
+                            <button class="mt-4 w-full bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center justify-center space-x-2">
+                                <i data-feather="check" class="w-4 h-4"></i>
+                                <span>Agregar IMEI</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reports Section -->
+                <section id="reports" class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">Reportes y Balance</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-medium mb-2">Ventas Mensuales</h4>
+                            <canvas id="salesChart" class="w-full h-64"></canvas>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-2">Balance General</h4>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="flex justify-between py-2 border-b">
+                                    <span>Total Inventario:</span>
+                                    <span class="font-medium">$48,750</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b">
+                                    <span>Ventas Mes Actual:</span>
+                                    <span class="font-medium">$12,400</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b">
+                                    <span>Ganancias:</span>
+                                    <span class="font-medium text-green-600">$3,720</span>
+                                </div>
+                                <div class="flex justify-between py-2">
+                                    <span>Reparaciones:</span>
+                                    <span class="font-medium">$1,200</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Initialize AOS
+        AOS.init();
+
+        // Initialize feather icons
+        feather.replace();
+
+        // Scanner functionality
+        document.getElementById('start-scanner').addEventListener('click', function() {
+            const html5QrCode = new Html5Qrcode("reader");
+            const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+                console.log(`Code matched = ${decodedText}`, decodedResult);
+                html5QrCode.stop().then((ignore) => {
+                    // QR Code scanning is stopped.
+                    alert(`IMEI escaneado: ${decodedText}`);
+                }).catch((err) => {
+                    // Stop failed, handle it.
+                    console.error(err);
+                });
+            };
+            
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+            
+            html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
+                .catch(err => {
+                    console.error(err);
+                });
+        });
+
+        // Chart initialization
+        const salesCtx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(salesCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Ventas ($)',
+                    data: [12000, 19000, 15000, 18000, 22000, 12400],
+                    backgroundColor: 'rgba(79, 70, 229, 0.5)',
+                    borderColor: 'rgba(79, 70, 229, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
